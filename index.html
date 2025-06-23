@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>𝒮𝒪𝐹𝐼𝒜 - 𝒦𝐼𝐿𝐿𝐸𝑅 - 𝐵𝐸𝒞𝒦</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="icon" 
+      type="image/png" 
+      sizes="32x32" 
+      href="icon.png">
+
+<!-- fallback for older browsers -->
+<link rel="shortcut icon" href="icon.png" type="image/png">
+
+  <style>
+    /* --- Custom Fonts --- */
+    @font-face {
+      font-family: 'DarkGrog';
+      src: url('DarkGrog.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'coterie-regular';
+      src: url('coterie-regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: coterie-regular, sans-serif;
+      margin: 0;
+      padding-top: 60px; /* navbar height */
+      overflow-x: hidden;
+    }
+    p {
+      font-family: 'Times New Roman', sans-serif;
+    }
+    .nav-item {
+            font-family: 'Times New Roman', sans-serif;
+
+    }
+
+    
+    /*----------------------------------
+       Hero Section
+    ----------------------------------*/
+.hero-section {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+/* Dove video as full-bleed background */
+.hero-section video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+  z-index: -2;
+}
+
+/* Header image layered on the right */
+.hero-overlay {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 100%;        
+  width: auto;         
+  object-fit: contain; 
+  pointer-events: none;
+  z-index: -1;
+
+  /* start invisible */
+  opacity: 0;
+
+  /* fade in over 3s, delay to sync with line if you like */
+  animation: fadeIn 3s ease forwards;
+  /* animation-delay: 1s;  optionally delay the start */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+    
+    /* Container for the animated line & signature (absolute positioning) */
+    .line-container {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      display: inline-block;
+      pointer-events: none;
+      z-index: 2;
+    }
+    
+    /* --- Animated line with gradient mask reveal using hero.png --- */
+    .animated-line {
+      display: block;
+      width: 1000px; /* adjust as needed */
+      height: 300px; /* adjust to suit your hero.png aspect ratio */
+      background: url('hero.png') no-repeat left center / contain;
+      -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: left center;
+      -webkit-mask-size: 0% 100%;
+      animation: revealLine 4s ease forwards;
+    }
+    @keyframes revealLine {
+      0% {
+        -webkit-mask-size: 0% 100%;
+      }
+      100% {
+        -webkit-mask-size: 100% 100%;
+      }
+    }
+    /* --- End animated line --- */
+    
+    /* Signature image that fades in simultaneously with the line */
+    .signature {
+      position: absolute;
+      bottom: 50%; /* adjust to reduce whitespace between signature and brush image */
+      left: 0;    /* flush with the left */
+      opacity: 0;
+      max-width: 500px;
+      height: auto;
+      animation: fadeIn 3s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+  .signature {
+    display: none !important;
+  }
+  .animated-line {
+    display: none !important;
+  }
+  .line-container {
+    display: none !important;
+  }
+}
+    
+    /* Container for the dove video */
+    .video-container {
+      margin-top: 350px; /* adjust as needed */
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    .video-container video {
+      max-width: 800px; 
+      width: 100%;
+      height: auto;
+    }
+    
+/*----------------------------------
+  About + Work (split-screen)
+----------------------------------*/
+.split-screen {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Base panels: pure black, smooth “glare” on hover */
+.left-panel,
+.right-panel {
+  flex: 1;
+  position: relative;                /* for the ::before pseudo-bg */
+  overflow: hidden;
+  background-color: black;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.left-panel:hover,
+.right-panel:hover {
+  background-color: #111;            /* quick “glare” */
+}
+
+/* Dimmed-image pseudo-element, fades in after glare */
+.left-panel::before,
+.right-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;                          /* fill the panel */
+  background-size: cover;
+  background-position: center;
+  filter: brightness(30%);
+  opacity: 0;
+  transition: opacity 0.3s ease 0.15s; /* delay so glare first */
+  z-index: 0;                        /* behind the text */
+}
+
+.left-panel:hover::before {
+  background-image: url('about.jpg');
+  opacity: 1;
+}
+.right-panel:hover::before {
+  background-image: url('work.jpg');
+  opacity: 1;
+}
+
+/* Keep the panel text on top */
+.left-panel .text-center,
+.right-panel .text-center {
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive mobile: stack and each is 50vh again */
+@media (max-width: 1200px) {
+  .split-screen {
+    flex-direction: column;
+    height: 100vh;
+  }
+  .left-panel,
+  .right-panel {
+    height: 50vh;    /* original mobile height */
+    width: 100%;
+  }
+}
+
+
+    }
+  </style>
+</head>
+<body>
+  <!-- Inline SVG Filter for Pristine Brush/Ink Effect -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+    <filter id="brush-effect">
+      <feTurbulence type="fractalNoise"
+        baseFrequency="0.05"
+        numOctaves="2"
+        result="noise"/>
+      <feDisplacementMap in="SourceGraphic"
+        in2="noise"
+        scale="3"
+        xChannelSelector="R"
+        yChannelSelector="G"/>
+    </filter>
+  </svg>
+  
+  <!-- Bootstrap Navbar -->
+<!-- Clean Centered Navbar -->
+<nav class="navbar navbar-light bg-white fixed-top shadow-sm">
+  <div class="container d-flex flex-column align-items-center py-1">
+    <!-- Brand -->
+    <a class="navbar-brand text-center mb-0" href="#home" style="font-weight: bold; font-size: 2rem;">
+      SOFIA KILLER BECK
+    </a>
+
+    <!-- Nav Items -->
+    <ul class="navbar-nav d-flex flex-row gap-4">
+      <li class="nav-item">
+        <a class="nav-link fw-bold" href="#about-work">ABOUT</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fw-bold" href="#work">WORK</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link fw-bold" href="contact/contact.html">CONTACT</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+  
+<!-- Hero Section -->
+<section class="hero-section" id="home">
+  <div class="hero-media">
+    <!-- Left: Dove video -->
+    <div class="hero-video">
+      <video
+        src="dove.mp4"
+        autoplay
+        muted
+        loop
+        playsinline
+      ></video>
+    </div>
+
+    <!-- Right: Transparent-background header.jpg -->
+    <img src="header.jpg" alt="Sofia Beck" class="hero-overlay" />
+  </div>
+
+  <!-- Animated line + signature stay the same -->
+  <div class="line-container">
+    <div class="animated-line"></div>
+    <img src="signature.png" alt="Signature" class="signature">
+  </div>
+</section>
+  
+  <!-- About and Work Section (Split-screen) -->
+<section id="about-work" class="split-screen">
+  <div onclick="location.href='about/about.html';" class="left-panel d-flex justify-content-center align-items-center text-white" style="text-decoration: none;">
+    <div class="text-center">
+      <h1>About</h1>
+      <p>ARTIST • GRAPHIC DESIGNER • UI/UX</p>
+    </div>
+  </div>
+
+  <div id="work" onclick="location.href='work/work.html';" class="right-panel d-flex justify-content-center align-items-center text-white" style="text-decoration: none;">
+    <div class="text-center">
+      <h1>Work</h1>
+      <p>ART • MAGAZINE COVERS • IMPACT</p>
+    </div>
+  </div>
+</section>
+
+  
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
